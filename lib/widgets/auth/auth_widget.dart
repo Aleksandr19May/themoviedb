@@ -89,18 +89,15 @@ class _FormWidgetState extends State<_FormWidget> {
   String? errorText = null;
 
   void _auth() {
-   final login =  _loginTextController.text;
-   final password = _passwordTextController.text;
-   if (login == 'admin' && password =='admin' ) {
-    errorText = null;
-    print('open app');}
-    else {
+    final login = _loginTextController.text;
+    final password = _passwordTextController.text;
+    if (login == 'admin' && password == 'admin') {
+      errorText = null;
+      print('open app');
+    } else {
       errorText = 'Неверный логин или пароль';
-      
     }
-   setState(() {
-     
-   });
+    setState(() {});
   }
 
   void _resertPassword() {
@@ -115,11 +112,19 @@ class _FormWidgetState extends State<_FormWidget> {
         contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         isCollapsed: true);
     const style = TextStyle(fontSize: 16, color: Color(0xFF212529));
-final errorText = this.errorText;
+    final errorText = this.errorText;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (errorText != null) Text(errorText),
+        if (errorText != null) ...[
+          Text(
+            errorText, // В массив children мы вносим подмассив Text и после условия if пишем три точки
+            style: const TextStyle(color: Colors.red, fontSize: 17),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+        ],
         const Text(
           'Имя пользователя',
           style: style,
@@ -127,7 +132,7 @@ final errorText = this.errorText;
         const SizedBox(
           height: 5,
         ),
-         Padding(
+        Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: TextField(
             controller: _loginTextController,
@@ -144,7 +149,7 @@ final errorText = this.errorText;
         const SizedBox(
           height: 5,
         ),
-         Padding(
+        Padding(
           padding: const EdgeInsets.only(right: 10.0),
           child: TextField(
             controller: _passwordTextController,
@@ -157,8 +162,9 @@ final errorText = this.errorText;
         ),
         Row(
           children: [
-            TextButton(
-                style: const ButtonStyle(
+            ElevatedButton(
+              
+                style: const ButtonStyle( 
                     backgroundColor: MaterialStatePropertyAll(color),
                     foregroundColor: MaterialStatePropertyAll(Colors.white),
                     padding: MaterialStatePropertyAll(
