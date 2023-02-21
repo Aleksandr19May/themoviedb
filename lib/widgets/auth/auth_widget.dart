@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/Theme/app_button_style.dart';
 
 class AuthWidget extends StatefulWidget {
   const AuthWidget({super.key});
@@ -33,28 +34,42 @@ class _HeaderWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          SizedBox(
+        children: [
+          const SizedBox(
             height: 25,
           ),
-          _FormWidget(),
-          SizedBox(
+          const _FormWidget(),
+          const SizedBox(
             height: 25,
           ),
-          Text('Войти в свою учётную запись',
+          const Text('Войти в свою учётную запись',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
-          Text(
+          const Text(
               'Чтобы пользоваться правкой и возможностями рейтинга TMDB, а также получить персональные рекомендации, необходимо войти в свою учётную запись. Если у вас нет учётной записи, её регистрация является бесплатной и простой. Нажмите здесь, чтобы начать.',
               style: style),
-          SizedBox(
+          const SizedBox(
+            height: 5,
+          ),
+          TextButton(
+              onPressed: () {},
+              style: AppButtonStyle.linkButton,
+              child: const Text('Register')),
+          const SizedBox(
             height: 25,
           ),
-          Text(
+          const Text(
               'Если Вы зарегистрировались, но не получили письмо для подтверждения, нажмите здесь, чтобы отправить письмо повторно.',
               style: style),
+          TextButton(
+              onPressed: () {},
+              style: AppButtonStyle.linkButton,
+              child: const Text('Verify email')),
+          const SizedBox(
+            height: 5,
+          ),
         ],
       ),
     );
@@ -69,20 +84,42 @@ class _FormWidget extends StatefulWidget {
 }
 
 class _FormWidgetState extends State<_FormWidget> {
+  final _loginTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  String? errorText = null;
+
+  void _auth() {
+   final login =  _loginTextController.text;
+   final password = _passwordTextController.text;
+   if (login == 'admin' && password =='admin' ) {
+    errorText = null;
+    print('open app');}
+    else {
+      errorText = 'Неверный логин или пароль';
+      
+    }
+   setState(() {
+     
+   });
+  }
+
+  void _resertPassword() {
+    print('resert password');
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
-    const  color =  Color(0xFF01B4E4);
+    const color = Color(0xFF01B4E4);
     const textFieldDecoration = InputDecoration(
         border: OutlineInputBorder(),
         contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         isCollapsed: true);
     const style = TextStyle(fontSize: 16, color: Color(0xFF212529));
-    
+final errorText = this.errorText;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:  [
+      children: [
+        if (errorText != null) Text(errorText),
         const Text(
           'Имя пользователя',
           style: style,
@@ -90,9 +127,10 @@ class _FormWidgetState extends State<_FormWidget> {
         const SizedBox(
           height: 5,
         ),
-        const Padding(
-          padding: EdgeInsets.only(right:10.0),
+         Padding(
+          padding: const EdgeInsets.only(right: 10.0),
           child: TextField(
+            controller: _loginTextController,
             decoration: textFieldDecoration,
           ),
         ),
@@ -106,30 +144,39 @@ class _FormWidgetState extends State<_FormWidget> {
         const SizedBox(
           height: 5,
         ),
-        const Padding(
-          padding: EdgeInsets.only(right:10.0),
+         Padding(
+          padding: const EdgeInsets.only(right: 10.0),
           child: TextField(
+            controller: _passwordTextController,
             decoration: textFieldDecoration,
             obscureText: true,
           ),
         ),
-      Row(children: [
-        TextButton(
-          style:const  ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(color),
-            foregroundColor: MaterialStatePropertyAll(Colors.white),
-            padding:MaterialStatePropertyAll(value) ,
-            textStyle: MaterialStatePropertyAll(TextStyle(
-              fontSize: 16,fontWeight: FontWeight.w700
+        const SizedBox(
+          height: 25,
+        ),
+        Row(
+          children: [
+            TextButton(
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(color),
+                    foregroundColor: MaterialStatePropertyAll(Colors.white),
+                    padding: MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(horizontal: 15, vertical: 8)),
+                    textStyle: MaterialStatePropertyAll(
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    )),
+                onPressed: _auth,
+                child: const Text('Login')),
+            const SizedBox(
+              width: 30,
             ),
-            
-            ) 
-          ),
-          onPressed: () {}, child: const Text('Login')),
-        TextButton(onPressed: () {}, child: const Text('Reset password')),
-      ],)
-      
-      
+            TextButton(
+                onPressed: _resertPassword,
+                style: AppButtonStyle.linkButton,
+                child: const Text('Reset password')),
+          ],
+        )
       ],
     );
   }
