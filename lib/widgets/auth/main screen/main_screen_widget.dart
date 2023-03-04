@@ -12,24 +12,16 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
+  int _selectedTab = 0;
 
-int _selectedTab = 0;
+  
 
-static const List<Widget> _widgetOptions = <Widget> [
-Text('Новости'),
-MovieListWidget(),
-Text('Сериалы'),
-];
-
-
-
-
-void onSelectTab (int index) {
-  if (_selectedTab ==index ) return;
-  setState(() {
-    _selectedTab=index;
-  });
-}
+  void onSelectTab(int index) {
+    if (_selectedTab == index) return;
+    setState(() {
+      _selectedTab = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +29,23 @@ void onSelectTab (int index) {
       appBar: AppBar(
         title: Text('TMDB'),
       ),
-      body: Center(child:_widgetOptions[_selectedTab] ,),
+      body: IndexedStack(
+        index: _selectedTab,
+        children: [
+ Text('Новости'),
+    MovieListWidget(),
+    Text('Сериалы'),
+      ],),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
         items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Новости'),
-         BottomNavigationBarItem(icon: Icon(Icons.movie_creation), label: 'Фильмы'),
-         BottomNavigationBarItem(icon: Icon(Icons.tv), label: "Сериалы"),
-      ],
-      onTap: onSelectTab,),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Новости'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.movie_creation), label: 'Фильмы'),
+          BottomNavigationBarItem(icon: Icon(Icons.tv), label: "Сериалы"),
+        ],
+        onTap: onSelectTab,
+      ),
     );
   }
 }

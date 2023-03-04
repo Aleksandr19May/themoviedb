@@ -1,4 +1,4 @@
 class AppImages {
 
-  static const String about_movie = 'assets/images/about_movie.jpg';
+  static const String moviePlacholder = 'assets/images/about_movie.jpg';
 }
