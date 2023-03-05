@@ -34,16 +34,16 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         children: [
           Text('Новости'),
           MovieListWidget(),
-          Center(
-            child: Container(
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.red)),
-                // width: 100,
-                // height: 100,
-                child: CustomPaint(
-                  painter: Example(),
-                  size: Size(300, 300),
-                )),
+          const RadialPercentWidget(
+            fillColor: Colors.black,
+            freeColor: Colors.red,
+            lineColor: Colors.yellow,
+            percent: 0.72,
+            lineWidth: 10,
+            child: Text(
+              '72%',
+              style: TextStyle(fontSize: 25),
+            ),
           ),
         ],
       ),
@@ -61,31 +61,67 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   }
 }
 
+class RadialPercentWidget extends StatelessWidget {
+  final Widget child;
+  final double percent;
+  final Color fillColor;
+  final Color lineColor;
+  final Color freeColor;
+  final double lineWidth;
+  const RadialPercentWidget(
+      {super.key,
+      required this.child,
+      required this.percent,
+      required this.fillColor,
+      required this.lineColor,
+      required this.freeColor,
+      required this.lineWidth});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(11.0),
+          child: Center(
+            child: CustomPaint(
+                size: Size(200, 200),
+                painter: Example(
+                    percent: percent,
+                    fillColor: fillColor,
+                    lineColor: lineColor,
+                    freeColor: freeColor,
+                    lineWidth: lineWidth)),
+          ),
+        ),
+        Center(child: child),
+      ],
+    );
+  }
+}
+
 class Example extends CustomPainter {
-  final double percent = 0.25;
+  final double percent;
+  final Color fillColor;
+  final Color lineColor;
+  final Color freeColor;
+  final double lineWidth;
+  const Example(
+      {required this.percent,
+      required this.fillColor,
+      required this.lineColor,
+      required this.freeColor,
+      required this.lineWidth});
   @override
   void paint(Canvas canvas, Size size) {
-    final backgroundPainter = Paint();
-    backgroundPainter.color = Colors.green;
-    backgroundPainter.style = PaintingStyle.fill;
-    canvas.drawOval(Offset.zero & size, backgroundPainter);
 
-    final fillPainter = Paint();
-    fillPainter.color = Colors.red;
-    fillPainter.style = PaintingStyle.stroke;
-    fillPainter.strokeWidth = 10;
-    canvas.drawArc(Offset(5, 5) & Size(size.width - 10, size.height - 10),
-        -pi / 2, pi * 2 * percent, false, fillPainter);
+    Rect arcRect = calculateRect(size);
 
-    final freeSpace = Paint();
-    freeSpace.color = Colors.yellow;
-    freeSpace.style = PaintingStyle.stroke;
-    freeSpace.strokeWidth = 10;
+    drawBackground(canvas, size);
 
-    canvas.drawArc(Offset(5, 5) & Size(size.width - 10, size.height - 10),
-        pi * 2 * percent - (pi/2), // начальная точка дуги 
-        pi * 2 * (1-percent), // длина дуги
-         false, freeSpace);
+    drawFreeSpace(canvas, arcRect);
+
+    drawFilledArc(canvas, arcRect);
 
     // final paint = Paint();
     //   paint.color = Colors.amber;
@@ -96,6 +132,43 @@ class Example extends CustomPainter {
     //    canvas.drawRect(Offset.zero & Size(80,80), paint);
     //    canvas.drawLine(Offset.zero, Offset(40, 40), paint);
     //    canvas.drawLine(Offset(80,0), Offset(40, 40), paint);
+  }
+
+  void drawFilledArc(Canvas canvas, Rect arcRect) {
+    final paint = Paint();
+    paint.strokeCap = StrokeCap.round; // скругляет окончание линий
+    paint.color = fillColor;
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = lineWidth;
+    canvas.drawArc(arcRect, -pi / 2, pi * 2 * percent, false, paint);
+  }
+
+  void drawFreeSpace(Canvas canvas, Rect arcRect) {
+    final paint = Paint();
+    paint.color = lineColor;
+    paint.style = PaintingStyle.stroke;
+    paint.strokeWidth = lineWidth;
+    canvas.drawArc(
+        arcRect,
+        pi * 2 * percent - (pi / 2), // начальная точка дуги
+        pi * 2 * (1 - percent), // длина дуги
+        false,
+        paint);
+  }
+
+  void drawBackground(Canvas canvas, Size size) {
+    final paint = Paint();
+    paint.color = freeColor;
+    paint.style = PaintingStyle.fill;
+    canvas.drawOval(Offset.zero & size, paint);
+  }
+
+  Rect calculateRect(Size size) {
+    const linesMargin = 6;
+    final offset = lineWidth / 2 + linesMargin;
+    final arcRect = Offset(offset, offset) &
+        Size(size.width - offset * 2, size.height - offset * 2);
+    return arcRect;
   }
 
   @override
