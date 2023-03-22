@@ -26,8 +26,16 @@ class MyApp extends StatelessWidget {
         '/auth': (context) => const AuthWidget(),
         '/mainScreen': (context) => const MainScreenWidget(),
         '/mainScreen/movie_details': (context) {
-          final id = ModalRoute.of(context)!.settings.arguments as int;
-          return MovieDetailsWidget(movieId: id,);},
+          final id = ModalRoute.of(context)!.settings.arguments;
+
+          if (id is int) {
+            return MovieDetailsWidget(
+              movieId: id,
+            );
+          } else {
+            return const MovieDetailsWidget(movieId: 0);
+          }
+        },
       },
       initialRoute: '/auth',
       onUnknownRoute: (settings) {
