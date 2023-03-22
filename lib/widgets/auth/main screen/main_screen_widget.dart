@@ -1,8 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 
 import '../../movie_list/movie_list_widget.dart';
 
@@ -27,14 +26,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TMDB'),
+        title: const Text('TMDB'),
       ),
       body: IndexedStack(
         index: _selectedTab,
-        children: [
+        children: const [
           Text('Новости'),
           MovieListWidget(),
-          const RadialPercentWidget(
+          RadialPercentWidget(
             fillColor: Colors.black,
             freeColor: Colors.red,
             lineColor: Colors.yellow,
@@ -85,7 +84,7 @@ class RadialPercentWidget extends StatelessWidget {
           padding: const EdgeInsets.all(11.0),
           child: Center(
             child: CustomPaint(
-                size: Size(200, 200),
+                size: const Size(200, 200),
                 painter: Example(
                     percent: percent,
                     fillColor: fillColor,

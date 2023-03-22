@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb/Theme/app_button_style.dart';
-import 'package:themoviedb/widgets/auth/main%20screen/main_screen_widget.dart';
+
 
 class AuthWidget extends StatefulWidget {
   const AuthWidget({super.key});
@@ -24,7 +24,7 @@ class _AuthWidgetState extends State<AuthWidget> {
 }
 
 class _HeaderWidget extends StatelessWidget {
-  const _HeaderWidget({super.key});
+  const _HeaderWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _HeaderWidget extends StatelessWidget {
 }
 
 class _FormWidget extends StatefulWidget {
-  const _FormWidget({super.key});
+  const _FormWidget();
 
   @override
   State<_FormWidget> createState() => _FormWidgetState();
@@ -104,7 +104,7 @@ class _FormWidgetState extends State<_FormWidget> {
   }
 
   void _resertPassword() {
-    print('resert password');
+    
   }
 
   @override
