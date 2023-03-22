@@ -16,10 +16,13 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
     return Scaffold(appBar: AppBar(
         title: const Text('Смертельная битва'),
       ),
-      body: ListView(
-        children: const [
-          MovieDetailsMainInfoWidget(),
-        ],
+      body: ColoredBox(
+        color: const Color.fromRGBO(24, 23, 27, 1),
+        child: ListView(
+          children: const [
+            MovieDetailsMainInfoWidget(),
+          ],
+        ),
       ),
       );
   }
