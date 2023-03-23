@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
         '/mainScreen': (context) => const MainScreenWidget(),
         '/mainScreen/movie_details': (context) {
           final id = ModalRoute.of(context)!.settings.arguments;
-
           if (id is int) {
             return MovieDetailsWidget(
               movieId: id,
